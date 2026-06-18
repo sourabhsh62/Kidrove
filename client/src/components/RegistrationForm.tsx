@@ -60,7 +60,8 @@ const RegistrationForm = () => {
     setServerError('')
 
     try {
-      const res = await fetch('/api/enquiry', {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api/enquiry'
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
