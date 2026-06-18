@@ -3,6 +3,6 @@ import { createEnquiry } from '../controllers/enquiryController.js'
 
 const router = Router()
 
-router.post('/', createEnquiry)
+router.post('/api/enquiry', createEnquiry)
 
 export default router
