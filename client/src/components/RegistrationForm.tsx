@@ -60,12 +60,17 @@ const RegistrationForm = () => {
     setServerError('')
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '/api/enquiry'
+      const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://kidrove.onrender.com/api/enquiry' : '/api/enquiry')
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 45000)
+
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       })
+      clearTimeout(timeoutId)
 
       if (!res.ok) {
         let message = 'Something went wrong'
@@ -81,7 +86,11 @@ const RegistrationForm = () => {
       setSuccess(true)
       setFormData({ name: '', email: '', phone: '' })
     } catch (err) {
-      setServerError(err instanceof Error ? err.message : 'Failed to submit. Please try again.')
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setServerError('Server is waking up, please try again in a moment.')
+      } else {
+        setServerError(err instanceof Error ? err.message : 'Failed to submit. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
