@@ -21,7 +21,8 @@ async function start() {
         console.warn(err);
     }
     app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
+            const viteUrl = process.env.VITE_URL || `http://localhost:${PORT}`
+    console.log(`Server running on ${viteUrl}`)
     });
 }
 start();

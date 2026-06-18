@@ -13,7 +13,10 @@ app.use(express.json())
 app.use('/api/enquiry', enquiryRouter)
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString()
+  })
 })
 
 async function start() {
@@ -26,7 +29,8 @@ async function start() {
   }
 
   app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`)
+    const viteUrl = process.env.VITE_URL || `http://localhost:${PORT}`
+    console.log(`Server running on ${viteUrl}`)
   })
 }
 
